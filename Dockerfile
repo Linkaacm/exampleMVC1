@@ -7,16 +7,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["WebApplication1/WebApplication1.csproj", "WebApplication1/"]
-RUN dotnet restore "WebApplication1/WebApplication1.csproj"
+COPY ["exampleMVC1/exampleMVC1.csproj", "exampleMVC1/"]
+RUN dotnet restore "exampleMVC1/exampleMVC1.csproj"
 COPY . .
-WORKDIR "/src/WebApplication1"
-RUN dotnet build "WebApplication1.csproj" -c Release -o /app/build
+WORKDIR "/src/exampleMVC1"
+RUN dotnet build "exampleMVC1.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WebApplication1.csproj" -c Release -o /app/publish
+RUN dotnet publish "exampleMVC1.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebApplication1.dll"]
+ENTRYPOINT ["dotnet", "exampleMVC1.dll"]
